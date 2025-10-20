@@ -33,33 +33,41 @@ Let's go over some terminology, principles, and design that will further explain
   - It specifies what fields (data) and methods (behavior) objects created from this class will have. 
   - They are basically plans — it defines a resulting object without being an object itself.
 
+
 - **Object (or Instance)**: A concrete realization of a class created in memory. 
   - If a class is the blueprint, an object is the resulting item. 
   - Each object has its own copy of the class's fields, but also shares the class's methods.
+
 
 - **Method**: Any function defined within a class that describes what objects (of that class) can do.
   - Methods represent the behavior of objects
   - Methods can also access and modify the object's fields
 
+
 - **Field (Attribute/Property)**: A variable defined within a class that holds data.
     - Fields represent the state of objects and define what information each object stores.
+
 
 - **Constructor**: This is a special method that is called when creating a new object using the `new` keyword.
     - Constructors initialize an object's fields and prepare it for use.
     - A constructor has the same name as its class and has no return type.
 
+
 - **Encapsulation**: The practice of bundling data (fields) and the methods that operate on that data together within a class, which also can hide the internal implementation details. 
   - In Java, access modifiers (`private`, `public`, `protected`) that control what parts of a class are visible to other classes. 
   - Encapsulation protects object integrity by preventing external code from directly manipulating internal state.
+
 
 - **Inheritance**: A mechanism where a new class (subclass/child) is created based on an existing class (superclass/parent), inheriting its fields and methods. 
   - This establishes an "is-a" relationship and promotes code reuse.
   - For example, if `Dog` inherits from `Animal`, a dog becomes an animal and automatically has all the properties and behaviors of its class (animal).
 
+
 - **Polymorphism**: The ability for objects of different classes to respond to the same method call in different ways.
   - Fun fact! Polymorphism literally means "many forms".
   - Polymorphism allows you to write general code that works with multiple specific types.
     For instance, `animal.makeSound()` could be programmed to produce different results on the `animal`, such as a dog, cat, or goose.
+
 
 - **Abstraction**: The practice of hiding complex implementation details and exposing only essential features.
   - Abstraction lets you focus on **what** an object does, not **how** it does it.
@@ -67,14 +75,17 @@ Let's go over some terminology, principles, and design that will further explain
   - It's like driving a car; while driving, we are (hopefully) not concerned about the nuance of fuel injection or electrical wiring, and instead focusing on steering, braking, etc.
   - In Java, we primarily use abstract classes and interfaces as abstractions.
 
+
 - **Composition**: Build complex objects by combining simpler objects, establishing "has-a" relationships between classes.
   - Promotes code reuse and creates flexible designs that are easier to modify when compared to inheritance hierarchies.
   - Objects contain instances of other objects as fields and delegate responsibilities to them
   - Example: A `Car` *has an* `Engine`, *has a* `Transmission`, and *has* `Wheel` objects; the car contains these objects and uses their methods, but is itself a distinct object.
 
+
 - **Message Passing**: The process by which objects communicate with each other through method calls.
   - For example, if we call `student.calculateGPA()`, we are actually sending a message to the student object and requesting it to perform that action (calculate student GPA).
   
+
 - **Contract**: A promise or agreement about what methods a class must provide.
   - Any class that implements or extends an interface or abstract class must provide a set of specific methods with these signatures
   - Here is an example contract below:
@@ -102,7 +113,7 @@ public class Bird implements Flyable {
 Just to make sure we are on the same page. Classes and objects are different but related!
 An object can be created using a class. Observe the image below for further clarification.
 
-![My Image](classes-vs-objects.png)
+![My Image](classes-vs-objects.png)  
 *Figure 1: Relationship Between Classes and Objects -  https://education.launchcode.org/data-analysis/chapters/classes-and-objects/creating-classes.html*
 
 If it's still not making sense, it will soon!
@@ -115,17 +126,21 @@ The SOLID principles are five design guidelines that help create maintainable, f
   - If a class tries to do too many things, changes to one responsibility can break functionality related to another.
   - For example, a `Student` class should handle student data and behavior; it should not be used for database connections or file I/O.
 
+
 - **Open/Closed Principle (OCP)**: Classes should be open for extension but closed for modification.
   - You should be able to add new functionality by creating new classes (through inheritance or composition) without changing existing, working code.
   - This principle reduces the risk of breaking existing functionality when adding features.
+
 
 - **Liskov Substitution Principle (LSP)**: Objects of a subclass should be able to replace objects of the superclass without breaking the program. 
   - For example, if `Dog` extends `Animal`, you should be able to use a `Dog` object anywhere an `Animal` object is expected.
   - In this way, we say that subclasses must honor the contracts established by their parent classes.
 
+
 - **Interface Segregation Principle (ISP)**: Clients should not be forced to depend on interfaces they don't use.
   - Rather than creating one large, general-purpose interface, we should create smaller, specific interfaces.
   - For example, instead of a giant `Animal` interface with methods for all the locomotion types, we should instead create separate `Flys`, `Swims`, and `Runs` interfaces.
+
 
 - **Dependency Inversion Principle (DIP)**: High-level modules should not depend on low-level modules; instead, both should depend on abstractions.
   - Quiz time! What's an abstraction? An abstraction is simplified representation of something more complicated.
@@ -142,14 +157,17 @@ Key considerations include:
   - Define classes based on the objects in the system.
   - For a university system, we would identify students, courses, professors, etc.
 
+
 - **Defining Relationships**: Determine how objects relate to each other.
   - Common relationships include "has-a" (composition), "is-a" (inheritance), and "uses-a" (dependency).
   - For example, a University *has an* HR department, a professor *is an* employee, and a course *uses a* classroom.
+
 
 - **Establishing Responsibilities**: Decide what each class is responsible for.
   - Apply SRP to keep classes focused.
   - Define methods for each class.
   - A `Course` class should manage enrollment and grading, while a separate `Transcript` class manages a student's academic history.
+
 
 - **Planning for Change**: Design systems that can accommodate future requirements without major rewrites.
   - Implement the classes and objects, preferably using a test based framework when appropriate.
@@ -165,16 +183,20 @@ Key aspects include:
   - Fields should be directly related to the class's responsibilities.
   - A `BankAccount` needs a `balance` and `accountNumber`; we don't need to know the account holder's favorite color.
 
+
 - **Defining Methods**: Create methods that allow objects to perform their responsibilities and interact with other objects.
   - Methods should have clear, single purposes and descriptive names.
   - It is better to use many small methods over a few large methods, as this reduces the scale of errors and helps during debugging.
+
 
 - **Access Control**: Use access modifiers appropriately.
   - Make fields `private` by default to enforce encapsulation, and provide `public` methods (getters/setters) only when external access is necessary.
   - Protect internal implementation details, in accordance with abstraction and encapsulation.
 
+
 - **Maintaining Invariants**: Ensure objects can never enter an invalid state.
   - If a `Rectangle` must always have positive dimensions, the constructor and setter methods should not allow for negative values.
+
 
 - **Designing Constructors**: Provide constructors that initialize objects in valid states.
   - Consider offering multiple constructors for different initialization scenarios.
@@ -193,11 +215,13 @@ Here are some fundamental patterns, although this list is definitely not exhaust
   - **Factory Method**: Defines an interface for creating objects but allows subclasses to decide which class to instantiate.
   This pattern delegates the instantiation logic to subclasses, which makes code more flexible and easier to extend.
 
+
 - **Structural Patterns**: deals with object composition and relationships between classes; provides ways to change a portion of code without requiring changes to the entire structure.
   - **Adapter**: Converts the interface of one class into an interface that clients expect, allowing incompatible classes to work together.
   Imagine a power adapter that lets you plug a US device into a European outlet; same concept.
   - **Composite**: Composes objects into tree structures to represent part-whole hierarchies (like folders containing files and other folders).
   This allows clients to treat individual objects and compositions uniformly, where we can perform the same operations on a single file, or even an entire folder structure.
+
 
 - **Behavioral Patterns**: deals with communication between objects and the assignment of responsibilities; provides ways to make interactions more flexible and easier to understand.
   - **Observer**: Defines a one-to-many dependency between objects where changes to one object automatically notify and update all dependent objects.
@@ -276,7 +300,9 @@ We also use double instead of a larger data type because we don't want to ineffi
 
 We need to ensure rectangles always have positive dimensions.
 Which brings us to the constructor methods section!
-Later, we'll cover getters & setters.
+
+
+We will cover getters & setters afterwards, no worries.
 
 
 **Things to remember, before we move on:**
@@ -295,8 +321,11 @@ Before we dig in further, a couple of rules we must follow when using constructo
 - Have no return type - not even `void` is allowed
 - Can (and probably should) have parameters
 
-Notice how we have three different constructors with the same name but different parameters? This is called **constructor overloading**.
+Notice how we have three different constructors with the same name but different parameters? 
+
+This is called **constructor overloading**.
 Constructors are considered overloaded when there are multiple constructors with different parameters within the same class.
+We will talk more about overloading later, but I just wanted to point it out for now.
 
 **Example: Rectangle Constructors**
 ```java
@@ -338,21 +367,27 @@ Rectangle rect3 = new Rectangle(4.0);        // 4x4 square
 - **Constructor overloading**
   - Constructor overloading provides flexibility by allowing classes to have multiple constructors with different parameters.
   - Users can create objects depending on what information they have available, which may vary depending on the user.
-  - The default constructor is especially useful - we can create an object first and set its values later.
+  - The default constructor is especially useful - we can create an object first, then set its values later.
+
 
 - **What Happens Without a Constructor?**
   - If we don't write any constructors, Java provides a default no-argument constructor automatically. 
   - Once a constructor is created by the programmer, Java stops providing the default one. 
   - If you want both parameterized and no-argument constructors, **you must write both explicitly**.
 
+
 - **Constructor Chaining:**
   - Notice `this(side, side)` in the square constructor? 
   - This calls another constructor in the same class, avoiding code duplication. 
   - Always call `this()` as the first statement if you use it!
 
-Let's talk more about `this`!
+Actually, let's talk more about `this`!
 
 ### The *this* Keyword
+
+![My Image](who.webp)  
+*Figure 2: Hopefully this joke makes sense in a bit - https://www.buzzfeed.com/andriamoore/andrew-garfield-spider-man-meme-movie*
+
 
 Huh? What is `this`? Oh, you mean `this`?
 More specifically, what is the `this` keyword in Java?
@@ -457,7 +492,8 @@ public double getArea() {
 ```
 
 As such, most programmers omit `this` when it's not needed.
-Some style guides prefer always using it for clarity, and it may depend on what your development guidelines are.
+*Some* style guides prefer always using it for clarity, and it may depend on what your development guidelines are.
+
 Now, let's move to getters and setters!
 
 ### Getters and Setters
@@ -475,10 +511,10 @@ public class BankAccount {
 }
 
 BankAccount account = new BankAccount();
-account.balance = -1000;  // Oops! Welcome to indentured servitude!
+account.balance = -1000;  // Welcome to indentured servitude!
 ```
 
-Public fields allow anyone to modify data without validation, which breaks invariants, cause bugs, and potential lawsuits.
+Public fields allow anyone to modify data without validation, which breaks invariants, cause bugs, and leads to lawsuits.
 
 **The Better Approach: Getters and Setters**  
 So, what can we do instead? I mean, we do need access to the account balance somehow.
@@ -655,11 +691,13 @@ System.out.println("Chained rectangle area: " + rect4.getArea());  // Resulting 
 ```
 We now have a properly designed class! Notice that we are able to generate objects with various parameters through our constructors, but they remain children of this class.
 This is a template which we can use and modify for our needs, and shows the power behind OOD.
-In fact, here is a UML design that represents our `Rectangle` class. Typically, a programmer would start with their UML design, then create the program.
-I am providing here at the end instead, so we can connect the dots! UML designs are just one way that programmers can visualize OOD.
 
-![My Image](Rectangle_PUML.png)
-*Figure 2: UML class diagram for the `Rectangle` class -  https://editor.plantuml.com/*
+
+In fact, here is a UML design that represents our `Rectangle` class. Typically, a programmer would start with their UML design, then create the program.
+I am providing here, so we can connect the dots to our finished! UML designs are just one way that programmers can visualize OOD, and represent a valuable design tool.
+
+![My Image](Rectangle_PUML.png)  
+*Figure 3: UML class diagram for the `Rectangle` class -  https://editor.plantuml.com/*
 
 ### OOD Pros and Cons
 Nothing is monolith, right? There are times when problems would be better solved using a different approach.
@@ -690,24 +728,30 @@ This allows code to accommodate future requirements efficiently. The Open/Closed
 - **Steeper Learning Curve**: OOD requires understanding abstract concepts, like abstraction, inheritance, polymorphism, and encapsulation.
   Beginners often find procedural programming initially more natural, as it mirrors step-by-step instructions.
 
+
 - **Over-Engineering Risk**: It's easy to create unnecessarily complex class hierarchies when simpler solutions would suffice.
   Why create five classes for a small data set when 20 lines of procedural functions would do the same thing?
   Knowing when to apply OOD versus when it just adds complexity is just another part of understanding OOD and programming in general.
+
 
 - **Performance Overhead**: Object creation, method calls, and polymorphic dispatch add small performance costs compared to procedural code.
   For most applications, we consider these effects negligible and an acceptable price to pay. 
   However, in performance-critical systems (like action video games or real-time systems), every microsecond makes all the difference.
 
+
 - **Initial Development Time**: Setting up a proper OOD system with classes, interfaces, and relationships takes more upfront time than writing procedural code.
   Oftentimes, developers will spend a good portion of their work time on UML designs and testing methods.
   But for something like a small, one-off script, it is hard to justify the overhead OOD can require.
+
 
 - **Memory Usage**: Speaking of overhead... objects carry overhead. By this, I mean each object stores its fields plus metadata about its type.
   (Remember when we talked about bytecode earlier? Anyway...) An array of simple procedural structures uses less memory than an array of objects.
   Again, this doesn't always matter, but memory-constrained environments do exist still.
 
+
 - **Inappropriate for Some Problems**: Mathematical computations, simple data transformations, and linear scripts don't benefit from OOD.
   Using objects to calculate standard deviation is almost certainly overkill.
+
 
 - **Maintenance of Class Hierarchies**: Deep inheritance trees can become rigid and difficult to modify.
   Once a parent class has over three layers of child classes, it becomes a bit of a maintenance nightmare.
@@ -785,7 +829,7 @@ System.out.println("Distance: " + dist);
 Now let's examine a case where OOD clearly makes more sense than a procedural approach. What if you became a zoo manager?
 Managing a zoo, with different types of animals? Now it's time to bring in `Classes` and `Objects`!
 
-**Procedural Approach (Not Ideal, Do Not Recommend):**
+**Procedural Approach (Not Ideal, Do Not Recommend, NOT FUN):**
 ```java
 public class ZooManagement {
     private static String[] animalNames = new String[100];
@@ -969,6 +1013,7 @@ myZoo.addAnimal(new Penguin("Skipper"));
 
 And that's that. An in-depth exploration of OOD, and introduction to its key components (especially in relation to Java).
 Let's move on the next chapter, shall we? We did an introduction to classes, but there are still some parts we should explore.
+*Sigh** actually, there are a lot of parts. Prepare for code.
 
 ---
 ### Academic Integrity Statement

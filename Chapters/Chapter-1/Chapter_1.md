@@ -142,7 +142,7 @@ Generally speaking though, most all Java programs follow the basic sequence note
 - Step 4. The JVM reads the bytecode and translates into the native operating system's machine code
 - Step 5. The JVM executes the instructions, performing the instructions contained within
 
-![My Image](how-java-works.jpg)
+![My Image](how-java-works.jpg)  
 *Figure 1: How Java Works -  https://smartprogramming.in/tutorials/java/how-java-works*
 
 ### Data type handling in Java
@@ -160,7 +160,7 @@ Generally speaking, data types are differentiated based on:
 There are two main categories of data types in Java: primitive and non-primitive.
 The range of values that each data type can hold is limited by the data type, and its size largely determines the potential range.
 
-![My Image](data_types_in_java.webp)
+![My Image](data_types_in_java.webp)  
 *Figure 2: Data Types in Java -  https://www.geeksforgeeks.org/java/java-data-types/*
 
 **Primitive Data Types**

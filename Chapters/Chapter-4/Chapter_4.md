@@ -18,7 +18,8 @@
 
 In Chapters 2 and 3, we built several classes to use as examples, including `Rectangle`, `Student`, and `BankAccount`.
 If you think I am not going to reuse all that code moving forward, you're wrong!
-And yet, how do we know our code actually works?
+
+And yet... how do we know our code actually works?
 It might compile, it might even work most of the time, but how do we know that?
 This is where Test Driven Development (TDD) comes into play.
 
@@ -153,7 +154,8 @@ And yes, there are cases when TDD does not make sense from a developer's standpo
     - Constantly rewriting tests to meet changing requirements is a Sisyphean task
     - Better to prototype and workshop until requirements are stable
 
-**Basically, the overhead is real - TDD is work:**
+**Basically, the overhead can compound quickly - TDD is work**
+
 Yea, TDD takes more time upfront. There is no doubt.
 It could usually result in twice as much code (production code + test code).
 For small projects or when deadlines are tight, TDD can feel like running in the sand for no reason.
@@ -164,13 +166,17 @@ For small projects or when deadlines are tight, TDD can feel like running in the
 - Systems where bugs will expensive mistakes (financial, medical, security)
 - Teams where multiple people work on the same codebase
 
-**Wait, business logic?**
-- Business logic is code that implements the application's rules and requirements, like invariants
-- Getters and setters (data access), UI code (buttons, forms, displays), database code (saving/loading data), toString() methods (formatting) **are not** considered business logic
+> **Wait, business logic?**
+>- Business logic is code that implements the application's rules and requirements, like invariants
+>- Examples of things that are not business logic include:
+>  - Getters and setters (data access)
+>  - UI code (buttons, forms, displays)
+>  - database code (saving/loading data)
+>  - toString() methods (formatting)
 
 ### Driver Testing and Prototyping
 
-Before TDD became popular, developers used different approaches to verify their code worked.
+Before TDD became popular, developers used other approaches to verify their code worked.
 
 **What is Driver Testing?**
 
@@ -207,7 +213,8 @@ public class BankAccountDriver {
 
 **Characteristics of driver testing:**
 - Quick to write, especially if you understand the code well
-- Requires manual verification (you read the output and check if it's right)
+- Requires manual verification
+  - You read the output and check if it's right
 - Not repeatable!
     - For every test, you have to run it and review the results
 - Doesn't scale (writing driver programs for 50+ classes, I'd rather not)
@@ -234,7 +241,7 @@ Because of this, writing comprehensive tests for a prototype is basically a wast
 Or alternatively:
 1. Build a quick prototype
 2. Get feedback / learn what you need
-3. Keep the prototype but now add a litany of tests it is refined
+3. Keep the prototype but add a litany of tests
 
 **When Each Approach Makes Sense**
 
@@ -262,11 +269,13 @@ Here's my hot take, take it or leave it:
 - Need to demo something to stakeholders fast
 - Learning by doing
 
-**In practice, I often combine them:**
+**In practice, I often use them all:**
 I'm not the most experienced programmer, so I typically start with a prototype to explore and learn.
 Once I understand what I'm building, I switch to TDD for the actual implementation.
 I don't, or haven't, often used driver testing - it's new to me.
+However, I've found it very helpful if there are existing drivers that could test my code.
 This gives me the speed of prototyping with the safety of TDD.
+
 TDD is a tool, not a religion.
 Use it when it adds value, skip it when it's not worth it.
 
@@ -283,7 +292,7 @@ JUnit 4 works pretty good too!
 When creating your Java project in your IDE, set up the project as a Maven project.
 You can still use JUnit otherwise, but this quick step will make your life easier later. Trust me.
 
-In a Maven project, add this dependency to your `pom.xml`:
+In your newly created Maven project, add this dependency to your `pom.xml`:
 ```xml
 <dependency>
     <groupId>org.junit.jupiter</groupId>
@@ -293,7 +302,7 @@ In a Maven project, add this dependency to your `pom.xml`:
 </dependency>
 ```
 
-In IntelliJ IDEA or Eclipse, JUnit can be included by default.
+In IntelliJ IDEA or Eclipse, JUnit might be included by default.
 Your test files go in `src/test/java` (parallel to `src/main/java`).
 
 **Basic JUnit Annotations**
@@ -350,40 +359,59 @@ However, the most commonly used assertions include:
 
 - **assertEquals(expected, actual)**: Values must be equal
 ```java
+
   assertEquals(1500.0, account.getBalance());
+
 ```
 
 - **assertTrue(condition)**: Condition must be true
 ```java
+
   assertTrue(account.getBalance() > 0);
+
 ```
 
 - **assertFalse(condition)**: Condition must be false
 ```java
+
   assertFalse(account.getBalance() < 0);
+
 ```
 
 - **assertNull(object)**: Object must be null
 ```java
+
   assertNull(account.getOwner());
+
 ```
 
 - **assertNotNull(object)**: Object must not be null
 ```java
+
   assertNotNull(account.getAccountNumber());
+
 ```
 
 - **assertThrows(ExceptionClass.class, executable)**: Code must throw expected exception
 ```java
+
   assertThrows(IllegalArgumentException.class, () -> {
       account.withdraw(-100);
   });
+
 ```
 
-**Basic test structure (AAA Pattern):**
+**Basic test structure (AAA Pattern):**  
+Generally speaking, it's helpful to follow the AAA during testing:
 - Arrange - Stage the data
 - Act - Do the operation
 - Assert - Confirm the results are correct
+
+![My Image](aaa_pattern.webp)  
+*Figure 2: The AAA (Arrange-Act-Assert) pattern - https://www.globalapptesting.com/blog/unit-testing*
+
+Here's a quick example:
+
 ```java
 @Test
 public void testWithdrawReducesBalance() {
@@ -398,9 +426,6 @@ public void testWithdrawReducesBalance() {
 }
 ```
 
-![My Image](aaa_pattern.webp)
-
-*Figure 2: The AAA (Arrange-Act-Assert) pattern - https://www.globalapptesting.com/blog/unit-testing*
 
 ### Test Coverage and Best Practices
 
@@ -660,9 +685,9 @@ public void testSetGPA_WithNaN_ThrowsException() {
 }
 ```
 Some programmers may choose to skip the red phase, and in some cases, that's probably alright.
-However, just keep in mind that if you're test passes when you didn't expect it too, maybe comment out the minimal code and see what happens.
+However, just keep in mind that if a test passes when you didn't expect it too, maybe comment out the minimal code and see what happens - just in case.
 
-**Complete Implementation with Full Test Suite**
+**What does it look like, when we put it altogether?**
 
 Here's an example test suite for the `Student` class, fully implemented and ready for additions:
 ```java
@@ -688,7 +713,7 @@ public class StudentTest {
         student = new Student("Artyom Volkov", 11111);
     }
     
-    // ==================== Constructor Tests ====================
+    // Constructor Tests
     // These tests verify that the Student constructor properly validates inputs
     // and initializes the object in a valid state.
     
@@ -758,7 +783,7 @@ public class StudentTest {
         });
     }
     
-    // ==================== GPA Tests ====================
+    // GPA Tests
     // These tests verify that GPA setter properly validates the range [0.0, 4.0]
     // and handles edge cases like NaN.
     
@@ -824,7 +849,7 @@ public class StudentTest {
         });
     }
     
-    // ==================== Course Enrollment Tests ====================
+    // Course Enrollment Tests
     // These tests verify that students can enroll in and drop courses correctly,
     // with proper validation and duplicate prevention.
     
@@ -905,7 +930,7 @@ public class StudentTest {
         assertFalse(dropped);
     }
     
-    // ==================== Defensive Programming Tests ====================
+    // Defensive Programming Tests
     // These tests verify that the Student class protects its internal state
     // from external modification.
     
@@ -924,7 +949,7 @@ public class StudentTest {
         });
     }
     
-    // ==================== Object Method Tests ====================
+    // Object Method Tests 
     // These tests verify that toString(), equals(), and hashCode() are properly overridden
     // according to their contracts.
     
@@ -967,7 +992,7 @@ public class StudentTest {
      * Verifies the hashCode contract: if two objects are equal (same ID),
      * they must have the same hash code.
      * This is critical for using Students in HashSet or as HashMap keys.
-     * Note that we also had to use equals().
+     * Note that we also had to use equals()!
      */
     @Test
     public void testHashCode_SameID_SameHashCode() {
@@ -982,7 +1007,7 @@ public class StudentTest {
 - Invalid inputs (null, empty, negative, zero)
 - Boundary values (0.0 GPA, 4.0 GPA)
 - Edge cases (NaN, duplicate enrollments)
-- Defensive programming! (unmodifiable lists)
+- Defensive programming (unmodifiable lists)
 - Object methods (toString, equals, hashCode)
 
 ### The Role of Testing in Industry
@@ -1001,7 +1026,7 @@ Here's why:
 **Testing in CI/CD Pipelines**
 
 In professional development, tests are not just fire and forget.
-They run continuously through Continuous Integration/Continuous Deployment (CI/CD) pipelines.
+Continuous Integration/Continuous Deployment (CI/CD) pipelines run tests continuously.
 
 **Typical workflow:**
 1. Developer writes code and tests locally
@@ -1022,9 +1047,7 @@ Tests usually run:
 - Before every deployment
 - On a schedule/routine (not always though)
 
-This catches problems immediately, not weeks later.
-
-**The bottom line:** Tests are rarely a one-time thing.
+**Tests are rarely a one-time thing**:  
 They're continuously executed throughout the software lifecycle.
 In fact, they are an unavoidable part of software development.
 This is why TDD matters, even if it takes more work for developers.

@@ -105,6 +105,10 @@ int result = 10 / 0;  // ArithmeticException
 The code is syntactically correct, but the operations cannot be completed.
 Runtime errors are exactly what exception handling is designed to fix.
 
+![My Image](Ohno.png)  
+*Figure 1: It happens - https://www.reddit.com/r/ProgrammerHumor/comments/hnf5ca/javalangnullpointerexception_at_programmerhumor/*
+
+
 **Logic Errors**
 
 These are the trickiest - our code compiles and runs without throwing exceptions, but it produces incorrect results.
@@ -133,8 +137,8 @@ Again, just keep testing.
 Java organizes all exceptions and errors in a class hierarchy.
 Understanding this hierarchy helps us know which exceptions to catch and when.
 
-![My Image](Exception-Hierarchy.png)
-*Figure 1: Java exception hierarchy - https://www.manishsanger.com/java-exception-hierarchy/*
+![My Image](Exception-Hierarchy.png)  
+*Figure 2: Java exception hierarchy - https://www.manishsanger.com/java-exception-hierarchy/*
 
 
 **The Throwable Class**
@@ -172,7 +176,7 @@ All exceptions inherit from `Exception`, which has two main branches:
 This is one of Java's most important (and also controversial) design decisions.
 
 ![My Image](checked-unchecked.png)
-*Figure 2: Checked vs Unchecked Exceptions - https://rollbar.com/blog/how-to-handle-checked-unchecked-exceptions-in-java/*
+*Figure 3: Checked vs Unchecked Exceptions - https://rollbar.com/blog/how-to-handle-checked-unchecked-exceptions-in-java/*
 
 **Checked Exceptions (We Must Handle)**
 
@@ -434,7 +438,7 @@ Sometimes our code needs to throw exceptions rather than catch them.
 Kiya! Drop ouchi gari, anyone? No?
 
 ![My Image](oh_yea.jpeg)  
-*Figure 3: One of my favorite throws... - https://cmac-judo.com/gokyo-no-waza/nage-waza-throwing-yechniqu/dai-ikkyo---yellow-belt/ouchi-gari.html*
+*Figure 4: A personal favorite... - https://cmac-judo.com/gokyo-no-waza/nage-waza-throwing-yechniqu/dai-ikkyo---yellow-belt/ouchi-gari.html*
 
 **The `throw` Keyword**
 
@@ -904,10 +908,10 @@ public void processData() throws IOException, SQLException {
     // Caller knows exactly what to handle
 }
 ```
-### Real-World Example: Student Enrollment with Exception Handling
+### Student Enrollment with Exception Handling
 
 Let's build an example that demonstrates proper exception handling.
-We'll use our `Student` class and add a simple enrollment system.
+We'll use our `Student` class and add an enrollment system.
 
 **Custom Exception for GPA Validation:**
 ```java

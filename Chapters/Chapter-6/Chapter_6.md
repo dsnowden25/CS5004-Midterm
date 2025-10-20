@@ -1513,7 +1513,7 @@ Now the `StudentRegistry` has complete control over its internal list.
 Users can't accidentally break invariants by calling ArrayList methods.
 Which they definitely would manage to do if given the option.
 
-**Summary: Why Inheritance Works (In This Case)**
+**Why Inheritance Works (In This Case)**
 
 The `Person → Student/Professor` hierarchy works because:
 - Genuinely models an "is-a" relationship
@@ -1524,7 +1524,7 @@ The `Person → Student/Professor` hierarchy works because:
 
 If we were tempted to add more levels (Student → GraduateStudent → PhDStudent → ...), we'd stop and consider composition and interface use instead.
 
-Next up, we close out this midterm with interfaces and polymorphism.
+On that note, our next (and `final` chapter) covers interfaces and polymorphism.
 Thanks for tuning in, stay cool.
 
 ---

@@ -20,9 +20,11 @@
 In Chapter 2, we learned the fundamentals of class design—constructors, the `this` keyword, getters/setters, and when to use OOD.
 We may have gotten a little overboard and branched into questions that Chapter 3 was meant to answer; that's totally okay!
 There's still lots to cover, especially how Java handles classes at the implementation level.
+
 There is a lot of code in this section! A lot of it was adapted from existing sources, with variations in comments and content.
 As such, we don't have a lot of images. Please, mentally prepare yourself for reading Java code. The examples here form the meat and potatoes.
 We also repeat ourselves about certain rules and practices, intentionally. Memorization typically requires some amount of repeated exposure, unfortunately.
+
 All that said, let's look at static vs instance behavior, proper method overriding, and some advanced design techniques that can prove useful.
 
 ### Static vs Instance Members
@@ -119,6 +121,7 @@ double dist = MathUtils.distance(0, 0, 3, 4);
 - Cannot use the `this` keyword (what would `this` refer to?)
 
 **Why can't static methods access instance methods directly?**
+
 Static methods do not have a `this` - you cannot call an instance method by name while within a static method.
 ```java
 public class Rectangle {
@@ -142,20 +145,25 @@ public class Rectangle {
 ```
 **Class-Level vs Object-Level Behavior**
 
-It is useful to think of static members as belonging to class.
-Meanwhile, instance members belong to individual objects.
+Remember this generalization:
+- Static members belong to class.
+- Instance members belong to individual objects
 
-Class-level (static):
+Class-level - **static**:
 - Shared across all instances
 - Accessed via class name
 - Able to exist even if no objects are created
 - Used mostly for utility functions, constants, counters (as seen previously)
 
-Object-level (instance):
+Object-level **instance**:
 - Unique to each object
 - Accessed via object reference
 - Only able to exist when objects are created
 - Used for object-specific data and behaviors
+
+![My Image](static_instance.png)  
+*Figure 1: Quick Reference Chart -  https://www.java67.com/2016/05/difference-between-static-and-nonstatic-member-variable-in-java.html*
+
 
 **Use Cases**
 
@@ -167,10 +175,11 @@ When would choose to use **static**?
     - More on this below!
 - Main method (when the entry point must be static)
 
-**Real quick: What is a factory method?**
+> **Real quick: What is a factory method?**
 A factory method is a static method that creates and returns objects of a class.
 We can call a factory method to create objects instead of calling a constructor using `new`.
 This can be useful when we want to return cached/reused objects, rather than creating new ones.
+
 Here is an example of a factory method in action.
 ```java
 public class Color {
@@ -246,7 +255,8 @@ double area = myRect.getArea();
 ```
 
 **Common Mistake: Using a static method to access an instance field**
-During your coding adventures, watch out for this! It can and will cause you trouble.
+
+Don't do this! During your coding adventures, this can and will cause you trouble. Observe:
 ```java
 public class Rectangle {
     private double width;
@@ -322,6 +332,10 @@ int sum3 = calc.add(1, 2, 3);        // Calls third method
     - What is an API? We will talk a more about this, hold fast.
 
 **Method Overriding**
+
+![My Image](method_overload.png)  
+*Figure 2: Basic Method Overloading -  https://takeuforward.org/java/method-overloading-in-java/*
+
 
 Method overriding means a subclass provides its own implementation of a method, one that is already defined in its parent class.
 This is a fundamental part of polymorphism and it's application.
@@ -419,7 +433,7 @@ One more time, with feeling! Let's review this chart before moving on, yea?
 | Compile-time or runtime | Compile-time (static polymorphism) | Runtime (dynamic polymorphism) |
 | Purpose | Convenience, flexibility | Specialization, polymorphism |
 
-**Example Showing Both:**
+**Here is an example showing both:**
 ```java
 public class Shape {
     // Can be overridden by subclasses
@@ -460,6 +474,7 @@ double area3 = rect.getArea(2.0, 3.0);   // Overload: 90.0
 
 Every single class in Java actually inherits from another class called `Object`.
 As if things weren't confusing enough!
+
 In fact, this is the root of Java's entire class hierarchy.
 So we should probably talk more about it...
 
@@ -640,13 +655,13 @@ public int hashCode() {
 }
 ```
 
-**We Override These Together: `equals()` and `hashCode()`**
+**Ride or Die Partners: `equals()` and `hashCode()`**
 
 You must always override `equals()` and `hashCode()` together.
-Why? Well, because if we override only one, we break the hash code contract and will cause bugs in collections.
+Why? Well, because if we override only one, we break the hash code contract and cause bugs in collections.
 If two objects are equal according to `equals()`, they MUST return the same hashCode()!
 
-**The golden rule:**
+**Override rules:**
 - Override `equals()` → Must override `hashCode()`
 - Override `hashCode()` → Must override `equals()`
 - Override `toString()` → Always a good idea, just helpful to do
@@ -893,8 +908,8 @@ public class Rectangle {
 
 Ever heard of the Gang of Four? Me neither, until now.
 They are a group of programmers (Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides) behind this famous design principle.
-It's design philosophy that depends on abstractions (interfaces, abstract classes), rather than concrete implementations.
-Access modifiers support the use of abstractions by hiding implementation details.
+It's a design philosophy that depends on abstractions (interfaces, abstract classes), rather than concrete implementations.
+Access modifiers support the use of abstractions (and interfaces) by hiding implementation details.
 
 **Bad: Dependent on an implementation**
 ```java
@@ -1066,6 +1081,9 @@ public void example() {
 }
 ```
 
+We will talk a more using `final` in later chapters. 
+
+
 **Defensive Copying**
 
 When your class contains mutable objects, we have to make defensive copies.
@@ -1134,7 +1152,7 @@ Key defensive techniques:
 - Validate all inputs in constructors and setters
 - Make defensive copies of mutable parameters
 - Return defensive copies of mutable fields
-- Use immutable objects when possible
+- Use immutable objects whenever possible, whenever we want something to stay the same
 - Make classes final to prevent malicious subclasses
 - Never trust client code to "play nice"
     - People get paid to break code, so
@@ -1194,22 +1212,26 @@ public final class BankAccount {  // Final - can't be subclassed
 
 **So why Is `String` Immutable?**
 
-Java made `String` immutable for several critical reasons:
+Java made `String` immutable for a few reasons:
 
 1. **Security** - Strings are used for passwords, file paths, network connections, database queries
     - If strings were mutable... Well, one part of code could change a password while another part uses it
     - SQL injection attacks would be easier if strings could be modified after validation
         - You do not want an SQL injection attack ruining your day
 
+
 2. **String Pool** - Java maintains a pool of string literals for memory efficiency
     - `String s1 = "hello";` and `String s2 = "hello";` share the same object
     - This is effectively "allowed" because strings can't change
 
+
 3. **Thread Safety** - Immutable objects are automatically thread-safe
     - Multiple threads can share strings without synchronization
 
+
 4. **Hash Keys** - Strings are commonly used as keys in HashMap
     - If strings were mutable, their hash codes could change, breaking the HashMap
+
 ```java
 // Because String is immutable:
 String password = "secret123";
@@ -1237,8 +1259,8 @@ First, let's consider our requirements, then move onto to design.
 - Includes proper documentation
 
 **UML Diagram:**
-![My Image](Student_PUML.png)
-*Figure 1: `Student` PUML Design -  https://editor.plantuml.com/*
+![My Image](Student_PUML.png)  
+*Figure 3: `Student` PUML Design -  https://editor.plantuml.com/*
 
 
 **Implementation:**
@@ -1470,29 +1492,10 @@ System.out.println(students.contains(karim2));  // true - now the equals and has
 **Future Testing Considerations:**
 
 This class is designed to be easily testable.
-In a future chapter, we'll come back to this example and write unit tests to verify the following:
+In fact, if I was programming this from scratch, I would have started with tests.
 
-**Boundary conditions are met:**
-- GPA at exactly 0.0 and 4.0 (should work)
-- GPA below 0.0 and above 4.0 (should throw exception)
-- Empty string names (should throw exception)
-- Negative student IDs (should throw exception)
 
-**Normal operation (no errors):**
-- Enrolling in courses
-- Dropping courses
-- Setting valid GPAs
-
-**Testing edge cases:**
-- Enrolling in the same course twice (should not duplicate)
-- Dropping a course not enrolled in (should return false)
-- Modifying returned course list (should not affect student)
-
-**Object method behavior functions correctly:**
-- `toString()` format is correct
-- `equals()` works with same ID, different data
-- `hashCode()` is consistent with `equals()`
-- Objects work correctly in HashSet and HashMap
+In a future chapter, we'll come back to this example and write unit tests.
 
 ### Common Implementation Mistakes to Avoid
 
@@ -1672,8 +1675,12 @@ One last time, with feeling. When implementing a class, make sure that:
 
 And that's that! Whew.
 I was hoping for a shorter chapter honestly...
-We've covered advanced class implementation in Java, from static members to defensive programming.
+But we covered advanced class implementation in Java, from static members to defensive programming.
+That's a lot of content, and there are probably still questions I don't have answers for.
+
+
 In the next chapter, we'll explore unit testing and test driven development.
+
 ---
 
 ### Academic Integrity Statement
