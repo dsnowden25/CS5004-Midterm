@@ -1013,7 +1013,7 @@ myZoo.addAnimal(new Penguin("Skipper"));
 
 And that's that. An in-depth exploration of OOD, and introduction to its key components (especially in relation to Java).
 Let's move on the next chapter, shall we? We did an introduction to classes, but there are still some parts we should explore.
-*Sigh** actually, there are a lot of parts. Prepare for code.
+*Sigh** actually, there are a lot of parts. Prepare for code.t
 
 ---
 ### Academic Integrity Statement
