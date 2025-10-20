@@ -203,8 +203,7 @@ Chances are good that if you're building mobile apps for the Android operating s
 E-commerce platforms, social media backends, and streaming services also all use Java for handling their massive audiences and constant use.
 - **Financial Services**: Trading platforms, banking systems, and financial analysis tools like to use Java because its strong static typing and compile-time error checking.
 When accuracy and reliability matter most, Java's syntax becomes more of a benefit rather than a burden.
-- **Big Data and Cloud Computing**: Technologies like Apache Hadoop, Apache Kafka, and Apache Spark were all built with Java.
-Because Java has high performance times and robust memory management, it is an ideal candidate for processing massive datasets and utilizing cloud-native microservices.
+  pandoc Chapters/Chapter-1/Chapter_1.md Chapters/Chapter-2/Chapter_2.md Chapters/Chapter-3/Chapter_3.md Chapters/Chapter-4/Chapter_4.md Chapters/Chapter-5/Chapter_5.md Chapters/Chapter-6/Chapter_6.md Chapters/Chapter-7/Chapter_7.md -o CS5004_Midterm_Snowden.pdf --resource-path=.:all_images:Chapters/Chapter-1:Chapters/Chapter-2:Chapters/Chapter-3:Chapters/Chapter-4:Chapters/Chapter-5:Chapters/Chapter-6:Chapters/Chapter-7Because Java has high performance times and robust memory management, it is an ideal candidate for processing massive datasets and utilizing cloud-native microservices.
 - **Scientific and Research Applications**: Java's portability means research code can run on different systems without modification.
 Considering that universities, research institutions, and think tanks may not even share a native tongue, such groups can appreciate the ability to run the same code regardless of their platform.
 Furthermore, Java has access to a variety of extensions that enable it to compete with Python concerning certain tasks.
