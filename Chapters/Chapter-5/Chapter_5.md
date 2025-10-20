@@ -1158,7 +1158,6 @@ and I acknowledge that this assignment is a 100% original work and that I receiv
 **Acknowledgements and assistance received:**
 - Course Content, primarily modules and lecture content
 - Java Exception Handling - https://docs.oracle.com/javase/tutorial/essential/exceptions/
-- Effective Java (3rd Edition) by Joshua Bloch - Chapter on Exceptions
 - Exception Handling Best Practices - https://www.baeldung.com/java-exceptions
 - Checked vs Unchecked Exceptions - https://www.geeksforgeeks.org/checked-vs-unchecked-exceptions-in-java/
 - Try-with-resources - https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
