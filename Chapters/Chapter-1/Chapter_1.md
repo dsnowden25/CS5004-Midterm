@@ -1,6 +1,9 @@
 # Chapter 1: Getting Started with Java
+
 **Name:** Daymian Snowden
+
 **Assignment:** Midterm
+
 ---
 ## Chapter covers:
 - Why Java was chosen for this course

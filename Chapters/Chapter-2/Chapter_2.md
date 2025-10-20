@@ -1,18 +1,21 @@
 # Chapter 2: Object Oriented Design with Java Basic
+
 **Name:** Daymian Snowden
+
 **Assignment:** Midterm
+
 ---
 ## Chapter covers:
 - OOD terminology and philosophy
 - Introduction to class
 - Basic class design 
-- Constructors
-- Getters/setters
+- Constructors 
 - The *this* pointer
+- Getters/setters
 - OOD pros and cons
 - Example problems showing the difference between an OOD approach vs procedural approach
 ---
-### Object-Oriented Design (OOD)
+### Object-Oriented Design (OOD) and Recap
 We talked a little bit about OOD in chapter 1, but let's discuss it in detail.
 Rather than approach problems as independent problems, OOD seeks to build a cohesive system of objects.
 These objects contain states, behaviors, and identities. 
@@ -94,7 +97,15 @@ public class Bird implements Flyable {
         System.out.println("Landing on branch");
     }
 }
+
 ``` 
+Just to make sure we are on the same page. Classes and objects are different but related!
+An object can be created using a class. Observe the image below for further clarification.
+
+![My Image](classes-vs-objects.png)
+*Figure 1: Relationship Between Classes and Objects -  https://education.launchcode.org/data-analysis/chapters/classes-and-objects/creating-classes.html*
+
+If it's still not making sense, it will soon!
 
 **Key Principles (SOLID)**
 
@@ -199,38 +210,765 @@ We don't have to memorize them all, but it is extremely helpful to apply these p
 At the end of the day, why do the work that's already been done, right?
 As it is, computer science is a vast field, and one can barely scratch the surface without revealing an overwhelming amount of content.
 
-### Introduction to class
+### Introduction to Classes
 
-### Basic class design
+A class in Java is the fundamental building block of OOD.
+They are effectively a user-created, custom data type to represent something meaningful in your program.
+Java provides primitive types like `int`, `double`, and `boolean`, and these are good. 
+However, with classes, we can bundle related data and behavior together and create good objects.
+
+Every class has several key components:
+- **Class Declaration**: Defines the class name and access level
+- **Fields**: Variables that hold the object's state
+- **Constructors**: Special methods that initialize new objects
+- **Methods**: Functions that define what objects can do
+- **Access Modifiers**: Keywords like `private` and `public` that control visibility
+
+### Basic Class Design
+
+When designing a class, we need to answer some questions:
+1. What does this object represent?
+2. What data does it need to store? (fields)
+3. What can it do? (methods)
+4. How should it be created? (constructors)
+
+As an example, let's design a `Rectangle` class, one step at a time.
+
+**Step 1/2: What does this object represent? What data does it need to store?**
+
+A rectangle represents a shape with a width and height:
+```java
+public class Rectangle {
+    private double width;
+    private double height;
+}
+```
+
+Notice that we used `private` for fields. Why would we do that?
+This is encapsulation! We don't want outside code directly changing these values without validation.
+Essentially, we are protecting our code from our code.
+
+**Step 3: Decide what operations make sense - What should it do?**
+
+What should a rectangle be able to do?
+Maybe it moves! Maybe it's decoration?
+In this case, we will keep it simple and include a method to calculate its area and perimeter:
+```java
+public class Rectangle {
+    private double width;
+    private double height;
+    
+    public double getArea() {
+        return width * height;
+    }
+    
+    public double getPerimeter() {
+        return 2 * (width + height);
+    }
+}
+```
+
+Notice the data types that we had to use.
+Static typing means without noting `double`, Java would show an error during compilation, as it wouldn't know what data type to use.
+We also use double instead of a larger data type because we don't want to inefficiently allocate more memory than necessary. 
+
+**Step 4: Add validation and constructors**
+
+We need to ensure rectangles always have positive dimensions.
+Which brings us to the constructor methods section!
+Later, we'll cover getters & setters.
+
+
+**Things to remember, before we move on:**
+- Keep fields private (encapsulation); make methods public only when necessary
+- Use meaningful names that clearly communicate purpose, with a preference for simplicity
+- Keep methods focused on a single responsibility
 
 ### Constructors
 
-### Getters/setters
+Constructors are special methods that run when we create a new object using the `new` keyword.
+They initialize the object's fields, and when properly coded, ensure objects start in a valid state.
+Before we dig in further, a couple of rules we must follow when using constructors in Java!
 
-### The *this* pointer
-Huh? What is a pointer? More specifically, what is a *this* pointer?
+**Constructor Rules:**
+- Must have the exact same name as the class
+- Have no return type - not even `void` is allowed
+- Can (and probably should) have parameters
 
-### OOD pros and cons
+Notice how we have three different constructors with the same name but different parameters? This is called **constructor overloading**.
+Constructors are considered overloaded when there are multiple constructors with different parameters within the same class.
+
+**Example: Rectangle Constructors**
+```java
+public class Rectangle {
+    private double width;
+    private double height;
+    
+    // Constructor with parameters
+    public Rectangle(double width, double height) {
+        // Validate input - important for all constructors
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Dimensions must be positive");
+        }
+        this.width = width;
+        this.height = height;
+    }
+    
+    // Default constructor (creates a 1x1 square)
+    public Rectangle() {
+        this.width = 1.0;
+        // Note: since we specified `double`, we use '1.0', not '1'
+        this.height = 1.0;
+    }
+    
+    // Constructor for squares (only one dimension needed)
+    public Rectangle(double side) {
+        this(side, side);  // Calls the two-parameter constructor
+    }
+}
+
+// Usage:
+Rectangle rect1 = new Rectangle(5.0, 3.0);  // 5x3 rectangle
+Rectangle rect2 = new Rectangle();           // 1x1 square (default)
+Rectangle rect3 = new Rectangle(4.0);        // 4x4 square
+```
+
+**Let's take a minute to talk about the above code and what is going on:**
+
+- **Constructor overloading**
+  - Constructor overloading provides flexibility by allowing classes to have multiple constructors with different parameters.
+  - Users can create objects depending on what information they have available, which may vary depending on the user.
+  - The default constructor is especially useful - we can create an object first and set its values later.
+
+- **What Happens Without a Constructor?**
+  - If we don't write any constructors, Java provides a default no-argument constructor automatically. 
+  - Once a constructor is created by the programmer, Java stops providing the default one. 
+  - If you want both parameterized and no-argument constructors, **you must write both explicitly**.
+
+- **Constructor Chaining:**
+  - Notice `this(side, side)` in the square constructor? 
+  - This calls another constructor in the same class, avoiding code duplication. 
+  - Always call `this()` as the first statement if you use it!
+
+Let's talk more about `this`!
+
+### The *this* Keyword
+
+Huh? What is `this`? Oh, you mean `this`?
+More specifically, what is the `this` keyword in Java?
+
+In Java, `this` is a reference to the current object — the object whose method or constructor is being called.
+Effectively, when we use `this`, the object points to itself.
+There are few cases when it's useful to use `this`.
+
+**Use Case 1: Disambiguating Field Names**
+
+This is the most common use, for when parameter names match field names:
+```java
+public class Student {
+    private String name;
+    private int studentID;
+    
+    public Student(String name, int studentID) {
+        // Without "this", Java wouldn't know which "name" you mean
+        this.name = name;           // this.name = the field
+        this.studentID = studentID; // name = the parameter
+    }
+}
+```
+
+Without `this`, the assignment `name = name` would just assign the parameter to itself - but we want it to apply to the field!
+This is actually a fairly common mistake, especially among programmers coming from other languages.
+When we want to assign a parameter to an object field, we need to specify `this`!
+```java
+public void setName(String name) {
+    name = name;  // Wrong! This assigns parameter to itself
+}
+
+public void setName(String name) {
+    this.name = name;  // Correct! Assigns parameter to field
+}
+```
+
+**Use Case 2: Calling Other Constructors**
+
+Look familiar? I should hope so! We did this earlier with constructor chaining:
+```java
+public class Rectangle {
+    private double width;
+    private double height;
+    
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    // Square constructor calls the rectangle constructor
+    public Rectangle(double side) {
+        this(side, side);  // Must be first statement
+    }
+}
+```
+
+**Use Case 3: Passing the Current Object**
+
+Sometimes, we want to pass the current object to another method:
+```java
+public class Student {
+    private String name;
+    
+    public void enrollInCourse(Course course) {
+        course.addStudent(this);  // Pass this student to the course
+    }
+}
+```
+
+**Use Case 4: Returning the Current Object**
+
+We can use `this` in a similar fashion as we did with constructor chaining - now introducing method chaining!
+By calling multiple methods in a row, each method will return `this` (the current object)
+```java
+public class StringBuilder {
+    public StringBuilder append(String text) {
+        // ... append logic ...
+        return this;  // Return the current object
+    }
+}
+
+// Allows chaining:
+StringBuilder sb = new StringBuilder()
+    .append("Hello")
+    .append(" ")
+    .append("World");
+
+System.out.println(sb.toString());  // Prints: Hello World
+```
+
+Using `this` is technically optional when there's no ambiguity, but it makes code clearer.
+These are equivalent:
+```java
+public double getArea() {
+    return this.width * this.height;  // Explicit
+}
+
+public double getArea() {
+    return width * height;  // Implicit - Java knows you mean this object's fields
+}
+```
+
+As such, most programmers omit `this` when it's not needed.
+Some style guides prefer always using it for clarity, and it may depend on what your development guidelines are.
+Now, let's move to getters and setters!
+
+### Getters and Setters
+
+Getters and setters (accessor and mutator methods) provide controlled access to private fields.
+They're a key part of encapsulation, where we protect access to our code's data unless otherwise necessary.
+
+**Why Not Just Make Fields Public?**
+
+Well, I can think of at least one example...
+```java
+// Fields are public
+public class BankAccount {
+    public double balance;  // Literally anyone can change this!
+}
+
+BankAccount account = new BankAccount();
+account.balance = -1000;  // Oops! Welcome to indentured servitude!
+```
+
+Public fields allow anyone to modify data without validation, which breaks invariants, cause bugs, and potential lawsuits.
+
+**The Better Approach: Getters and Setters**  
+So, what can we do instead? I mean, we do need access to the account balance somehow.
+```java
+public class BankAccount {
+    private double balance;  // Protected from direct access
+    
+    // Getter - allows reading the value
+    public double getBalance() {
+        return balance;
+    }
+    
+    // Setter - allows controlled modification
+    public void setBalance(double newBalance) {
+        if (newBalance < 0) {
+            throw new IllegalArgumentException("Balance cannot be negative");
+        }
+        this.balance = newBalance;
+    }
+}
+
+BankAccount account = new BankAccount();
+account.setBalance(1000);  // OK
+account.setBalance(-500);  // Throws exception - validation works!
+```
+
+**Getter Naming Convention:**  
+A quick note on proper Java etiquette.
+- When using boolean fields: `isFieldName()` or `hasFieldName()`
+- For all other types: `getFieldName()`
+```java
+public class Student {
+    private boolean enrolled;
+    private String name;
+    
+    public boolean isEnrolled() {  // Boolean getter uses "is"
+        return enrolled;
+    }
+    
+    public String getName() {  // Regular getter uses "get"
+        return name;
+    }
+}
+```
+
+**Do We Always Need Getters & Setters?**
+
+Short answer, no.
+Long answer, not every field needs both! 
+Consider the following use cases:
+- **Read-only fields**: Provide only a getter (like a student ID, which shouldn't change)
+- **Write-only fields**: More rare, but sometimes you only need a setter (like for passwords)
+- **No access**: Some fields are purely internal and need neither, which may change depending on the context
+
+**Computed Properties:**
+
+There is useful property of getters - they don't have to return stored fields directly!
+Instead, we can use them to calculate values:
+```java
+public class Rectangle {
+    private double width;
+    private double height;
+    
+    // Not stored as a field - computed on demand
+    public double getArea() {
+        return width * height;
+    }
+}
+```
+
+In fact, this typically a good way to store information. In this case, storing area as a field ensures the area automatically stays correct when dimensions change.
+Let's take a look at the `Rectangle` class we were making earlier, and integrate what we learned to make a properly designed class!
+
+```java
+public class Rectangle {
+    private double width;
+    private double height;
+    
+    // Constructor with parameters
+    public Rectangle(double width, double height) {
+        // Validate input - important for all constructors
+        if (width <= 0 || height <= 0) {
+            throw new IllegalArgumentException("Dimensions must be positive");
+        }
+        this.width = width;
+        this.height = height;
+    }
+    
+    // Default constructor (creates a 1x1 square)
+    public Rectangle() {
+        this.width = 1.0;
+        // Note: since we specified `double`, we use '1.0', not '1'
+        this.height = 1.0;
+    }
+    
+    // Constructor for squares (only one dimension needed)
+    public Rectangle(double side) {
+        this(side, side);  // Calls the two-parameter constructor
+    }
+    
+    // Getters
+    public double getWidth() {
+        return width;
+    }
+    
+    public double getHeight() {
+        return height;
+    }
+    
+    // Computed property - no field storage needed
+    public double getArea() {
+        return width * height;
+    }
+    
+    // Again, using computer property with a getter
+    public double getPerimeter() {
+        return 2 * (width + height);
+    }
+    
+    // Setters used for validation
+    public void setWidth(double width) {
+        if (width <= 0) {
+            throw new IllegalArgumentException("Width must be positive");
+        }
+        this.width = width;
+    }
+    
+    public void setHeight(double height) {
+        if (height <= 0) {
+            throw new IllegalArgumentException("Height must be positive");
+        }
+        this.height = height;
+    }
+    
+    // Method chaining - using setters that return 'this'
+    public Rectangle withWidth(double width) {
+        setWidth(width);
+        return this;  // Return current object for chaining
+    }
+    
+    public Rectangle withHeight(double height) {
+        setHeight(height);
+        return this;  // Return current object for chaining
+    }
+    
+    public Rectangle scale(double factor) {
+        this.width *= factor;
+        this.height *= factor;
+        return this;  // Return current object for chaining
+    }
+}
+
+// Usage examples:
+Rectangle rect1 = new Rectangle(5.0, 3.0);  // 5x3 rectangle
+Rectangle rect2 = new Rectangle();           // 1x1 square (default)
+Rectangle rect3 = new Rectangle(4.0);        // 4x4 square
+
+// Using our getters
+System.out.println("Area: " + rect1.getArea());           // Area: 15.0
+System.out.println("Perimeter: " + rect1.getPerimeter()); // Perimeter: 16.0
+
+// Using our setters
+rect2.setWidth(10.0);
+rect2.setHeight(5.0);
+System.out.println("New area: " + rect2.getArea());  // New area: 50.0
+
+// Method chaining - nice and readable!
+Rectangle rect4 = new Rectangle()
+    .withWidth(8.0)
+    .withHeight(4.0)
+    .scale(2.0);  // Now 16x8
+
+System.out.println("Chained rectangle area: " + rect4.getArea());  // Resulting Area: 128.0
+```
+We now have a properly designed class! Notice that we are able to generate objects with various parameters through our constructors, but they remain children of this class.
+This is a template which we can use and modify for our needs, and shows the power behind OOD.
+In fact, here is a UML design that represents our `Rectangle` class. Typically, a programmer would start with their UML design, then create the program.
+I am providing here at the end instead, so we can connect the dots! UML designs are just one way that programmers can visualize OOD.
+
+![My Image](Rectangle_PUML.png)
+*Figure 2: UML class diagram for the `Rectangle` class -  https://editor.plantuml.com/*
+
+### OOD Pros and Cons
+Nothing is monolith, right? There are times when problems would be better solved using a different approach.
+Before we get into that, let's review the pros and cons.
+
 **OOD Pros**
-- Modularity: OOD simplifies development and maintenance by decomposing complicated structures into smaller, more manageable components. 
-- Reusability: Objects and classes can be reused across different projects, reducing redundancy and saving time. 
-- Scalability: OOD facilitates system growth by making it simple to incorporate new objects without interfering with already-existing functionality. 
-- Maintainability: Encapsulation of data and behavior within objects simplifies troubleshooting and updates, enhancing system reliability. 
-- Clear Mapping to Real-World Problems: By modeling software after real-world entities and their interactions, OOD makes systems more intuitive and easier to understand. 
-- Flexibility and Extensibility: Through inheritance and polymorphism, OOD allows for extending and adapting systems with minimal changes, accommodating future requirements efficiently.
+
+- **Modularity**: OOD simplifies development and maintenance by decomposing complicated structures into smaller, more manageable components.
+  Each class focuses on a single, specific responsibility, resulting in a system that is easier to understand and modify.
+
+- **Reusability**: Objects and classes can be reused across different projects, reducing redundancy and saving time.
+  There is no reason we can use classes like `Date` or `Money` in other applications, likely with little to no modification.
+
+- **Scalability**: OOD facilitates system growth; when used properly, it should be simple to incorporate new objects without interfering with existing functionality.
+  Adding new animal types to our previous zoo example should require no changes to existing code, only additions.
+
+- **Maintainability**: Encapsulation of data and behavior within objects also simplifies troubleshooting and updates.
+  If a bug occurred in the `Rectangle` class, we would know exactly where to look — we would not have to search through procedural code, likely scattered across multiple files.
+
+- **Clear Mapping to Real-World Problems**: By modeling software after real-world entities and their interactions, OOD is a more intuitive and easier to understand approach to most systems.
+  Non-programmers are often able to understand class diagrams because they mirror real systems.
+
+- **Flexibility and Extensibility**: Through inheritance and polymorphism, OOD allows for extending and adapting systems with minimal changes.
+This allows code to accommodate future requirements efficiently. The Open/Closed Principle also relates to this flexibility.
 
 **OOD Cons**
-- fads
-- 
+
+- **Steeper Learning Curve**: OOD requires understanding abstract concepts, like abstraction, inheritance, polymorphism, and encapsulation.
+  Beginners often find procedural programming initially more natural, as it mirrors step-by-step instructions.
+
+- **Over-Engineering Risk**: It's easy to create unnecessarily complex class hierarchies when simpler solutions would suffice.
+  Why create five classes for a small data set when 20 lines of procedural functions would do the same thing?
+  Knowing when to apply OOD versus when it just adds complexity is just another part of understanding OOD and programming in general.
+
+- **Performance Overhead**: Object creation, method calls, and polymorphic dispatch add small performance costs compared to procedural code.
+  For most applications, we consider these effects negligible and an acceptable price to pay. 
+  However, in performance-critical systems (like action video games or real-time systems), every microsecond makes all the difference.
+
+- **Initial Development Time**: Setting up a proper OOD system with classes, interfaces, and relationships takes more upfront time than writing procedural code.
+  Oftentimes, developers will spend a good portion of their work time on UML designs and testing methods.
+  But for something like a small, one-off script, it is hard to justify the overhead OOD can require.
+
+- **Memory Usage**: Speaking of overhead... objects carry overhead. By this, I mean each object stores its fields plus metadata about its type.
+  (Remember when we talked about bytecode earlier? Anyway...) An array of simple procedural structures uses less memory than an array of objects.
+  Again, this doesn't always matter, but memory-constrained environments do exist still.
+
+- **Inappropriate for Some Problems**: Mathematical computations, simple data transformations, and linear scripts don't benefit from OOD.
+  Using objects to calculate standard deviation is almost certainly overkill.
+
+- **Maintenance of Class Hierarchies**: Deep inheritance trees can become rigid and difficult to modify.
+  Once a parent class has over three layers of child classes, it becomes a bit of a maintenance nightmare.
+  This is why developers would eventually "favor composition over inheritance" as an OOD design principle.
+
 ### Example Problem: Distance Between Two Points
+
 When would it be better to take a more procedural approach rather than OOD?
+We will use Java for both examples, although this difference would be even more pronounced if compared to a procedural language (like Python).
+With that said, let's examine calculating the distance between two points.
+
+**Procedural Approach:**
+```java
+public class Geometry {
+    public static double distance(double x1, double y1, double x2, double y2) {
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+}
+
+// Usage - straightforward and efficient
+double dist = Geometry.distance(0, 0, 3, 4);  // Returns 5.0
+System.out.println("Distance: " + dist);
+```
+
+**OOD Approach:**
+```java
+public class Point {
+    private double x;
+    private double y;
+    
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    public double distanceTo(Point other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+    
+    // Getters
+    public double getX() { return x; }
+    public double getY() { return y; }
+}
+
+// Usage - requires creating objects
+Point p1 = new Point(0, 0);
+Point p2 = new Point(3, 4);
+double dist = p1.distanceTo(p2);
+System.out.println("Distance: " + dist);
+```
+
+**Why Procedural Wins This Case:**
+
+1. **No State Management**: We're not tracking points over time; we simply need a one-time calculation.
+   Creating objects here just adds unnecessary overhead.
+
+2. **Syntax Aligns**: The procedural version `distance(x1, y1, x2, y2)` directly mirrors the mathematical formula d = √[(x₂-x₁)² + (y₂-y₁)²].
+
+3. **Performance**: No object allocation or garbage collection needed.
+   For calculations performed millions of times, this would make a difference!
+
+4. **Simplicity**: Four parameters in, one result out.
+   No classes, no objects, just pure function.
+
+5. **Thread Safety**: Stateless functions are automatically thread-safe.
+   Multiple threads can call `distance()` simultaneously without any synchronization.
+
 
 ### Example Problem: Managing A Zoo
-Now, there are cases where we clearly see that an OOD approach makes more sense than a procedural approach.
 
-![My Image](null.jpg)
-*Figure 1:  pending-  *
+Now let's examine a case where OOD clearly makes more sense than a procedural approach. What if you became a zoo manager?
+Managing a zoo, with different types of animals? Now it's time to bring in `Classes` and `Objects`!
 
+**Procedural Approach (Not Ideal, Do Not Recommend):**
+```java
+public class ZooManagement {
+    private static String[] animalNames = new String[100];
+    private static String[] animalTypes = new String[100];
+    private static int[] hungerLevels = new int[100];
+    private static int animalCount = 0;
+    
+    public static void addAnimal(String name, String type) {
+        animalNames[animalCount] = name;
+        animalTypes[animalCount] = type;
+        hungerLevels[animalCount] = 0;
+        animalCount++;
+    }
+    
+    public static void makeSound(int index) {
+        // Giant switch statement that grows with each new animal
+        // Absolutely disgusting to look at
+        switch(animalTypes[index]) {
+            case "Lion":
+                System.out.println(animalNames[index] + " roars!");
+                break;
+            case "Elephant":
+                System.out.println(animalNames[index] + " trumpets!");
+                break;
+            case "Penguin":
+                System.out.println(animalNames[index] + " squawks!");
+                break;
+            // Adding new animals means modifying this function
+            // Every. Single. Time.
+        }
+    }
+    
+    public static void feedAll() {
+        for (int i = 0; i < animalCount; i++) {
+            if (animalTypes[i].equals("Lion")) {
+                System.out.println("Feeding " + animalNames[i] + " meat");
+                hungerLevels[i] = 0;
+            } else if (animalTypes[i].equals("Elephant")) {
+                System.out.println("Feeding " + animalNames[i] + " hay");
+                hungerLevels[i] = 0;
+            }
+            // More conditionals for each animal type...
+            // This doesn't get better
+        }
+    }
+}
+
+// Usage - error-prone
+ZooManagement.addAnimal("Emilio", "Lion");
+ZooManagement.makeSound(0);  // Which animal is index 0? Ohhhh...
+```
+
+**Problems with Procedural Approach:**
+- Parallel arrays are fragile and error-prone
+- Adding new animal types requires modifying multiple functions
+- Giant switch/if statements that grow, forever
+- No encapsulation—any code can corrupt the arrays
+- Hard to ensure data consistency
+
+**OOD Approach (Clean and Extensible):**
+```java
+// Abstract base class
+public abstract class Animal {
+    protected String name;
+    protected int hungerLevel;
+    
+    public Animal(String name) {
+        this.name = name;
+        this.hungerLevel = 0;
+    }
+    
+    // Abstract methods - each animal implements differently
+    public abstract void makeSound();
+    public abstract void feed();
+    
+    // Common behavior
+    public void increaseHunger() {
+        hungerLevel++;
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+
+// Specific animals
+public class Lion extends Animal {
+    public Lion(String name) {
+        super(name);
+    }
+    
+    @Override
+    public void makeSound() {
+        System.out.println(name + " roars!");
+    }
+    
+    @Override
+    public void feed() {
+        System.out.println("Feeding " + name + " meat");
+        hungerLevel = 0;
+    }
+}
+
+public class Elephant extends Animal {
+    public Elephant(String name) {
+        super(name);
+    }
+    
+    @Override
+    public void makeSound() {
+        System.out.println(name + " trumpets!");
+    }
+    
+    @Override
+    public void feed() {
+        System.out.println("Feeding " + name + " hay");
+        hungerLevel = 0;
+    }
+}
+
+// Zoo manages the collection
+public class Zoo {
+    private ArrayList animals = new ArrayList<>();
+    
+    public void addAnimal(Animal animal) {
+        animals.add(animal);
+    }
+    
+    // Polymorphismmmm, we love it 
+    // Works for ANY animal type!
+    public void feedAll() {
+        for (Animal animal : animals) {
+            animal.feed();  // Each animal feeds itself correctly
+        }
+    }
+    
+    public void makeAllSounds() {
+        for (Animal animal : animals) {
+            animal.makeSound();
+        }
+    }
+}
+
+// Usage - clean, type-safe
+Zoo myZoo = new Zoo();
+myZoo.addAnimal(new Lion("Emilio"));
+myZoo.addAnimal(new Elephant("Biggie"));
+myZoo.addAnimal(new Lion("Meg"));
+
+myZoo.feedAll();        // Polymorphism handles everything!
+myZoo.makeAllSounds();  // Each animal makes its own sound
+
+// Want to add penguins? Just create the class
+// No existing code changes! Boom.
+myZoo.addAnimal(new Penguin("Skipper"));
+```
+
+**Why OOD Slays Procedural Here:**
+
+1. **Encapsulation**: Each animal knows its own data and behavior.
+   You can't accidentally corrupt a lion's hunger level from outside the class.
+
+2. **Inheritance**: Common animal behavior (hunger management) is inherited by all subtypes.
+   No code duplication needed.
+
+3. **Polymorphism**: The zoo treats all animals the same way (`animal.feed()`, `animal.makeSound()`), but doesn't need to know their specific types.
+   No giant switch statements, yes.
+
+4. **Extensibility**: If we wanted to add a new animal, we can do that!
+   Just create a new class extending `Animal`.
+   Zero changes to existing code as well.
+
+5. **Maintainability**: The `Lion` class contains all the logic it needs.
+   In procedural code, lion logic is scattered all over the place.
+
+6. **Type Safety**: The compiler ensures you can only add `Animal` objects to the zoo.
+   In procedural code with parallel arrays, we could accidentally add mismatched data.
+
+7. **Real-World Modeling**: The code structure mirrors reality, mirrors OOD - there *is* a zoo, it *has* animals, each animal *is a* specific type.
+   This makes the code intuitive, in the context of our current zoo situation.
+
+And that's that. An in-depth exploration of OOD, and introduction to its key components (especially in relation to Java).
+Let's move on the next chapter, shall we? We did an introduction to classes, but there are still some parts we should explore.
 
 ---
 ### Academic Integrity Statement
@@ -244,7 +982,20 @@ and I acknowledge that this assignment is a 100% original work and that I receiv
 - Object-Oriented Design (OOD) - https://science.jrank.org/programming/ObjectOriented_Design_OOD.html
 - Object (computer science) - https://en.wikipedia.org/wiki/Object_(computer_science)
 - Object-oriented design: Designing low-level design - https://medium.com/@kumar.atul.2122/object-oriented-design-designing-low-level-design-1b5ff9f3d0be
-- 
+- Chapter 11 Designing Classes - https://books.trinket.io/thinkjava2/chapter11.html
+- Java Classes and Objects - https://www.w3schools.com/java/java_classes.asp
+- Best Practices for Creating Java Object Classes - https://medium.com/strategio/best-practices-for-creating-java-object-classes-b4cdba3b995f
+- Class Design Best Practices in OOP Explained - https://arjancodes.com/blog/best-practices-for-class-design-in-object-oriented-programming/
+- Java Constructors - https://www.w3schools.com/java/java_constructors.asp
+- Understanding Java Method Overloading - https://www.geeksforgeeks.org/overloading-in-java/
+- Java 'this' Keyword - https://www.javatpoint.com/this-keyword
+- Encapsulation in Java - https://www.geeksforgeeks.org/encapsulation-in-java/
+- PUML Rectangle Class Design - https://editor.plantuml.com/
+- Java Access Modifiers - https://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html
+- SOLID Principles Explained - https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english/
+- Refactoring Guru: Design Patterns - https://refactoring.guru/design-patterns
+- Oracle Java Tutorials: Classes and Objects - https://docs.oracle.com/javase/tutorial/java/javaOO/index.html
+
 I did not use generative AI in any form to create this content and the final content was not adapted from generative AI created content.
 
 I did not view content from anyone else’s submission including submissions from previous semesters nor am I submitting someone else’s previous work in part or in whole.
